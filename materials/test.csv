@@ -1,4 +1,4 @@
-icon;size;amount
-bag.png;1;20
-fusion.png;2;30
-safe.png;3;35
+icon,size,amount
+bag.png,1,20
+fusion.png,2,30
+safe.png,3,35
