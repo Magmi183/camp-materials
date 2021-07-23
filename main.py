@@ -6,8 +6,9 @@
 from fpdf import FPDF
 import pandas as pd
 
-sizes = {1: 48, 2: 38, 3: 30}
+sizes = {1: 43, 2: 34, 3: 27, 5: 42}
 pad = 5
+edge_margin = 10
 
 def save_pdf(pdf, name):
     filename = name + '.pdf'
@@ -25,19 +26,22 @@ def arrange_section(pdf, icon, size, amount):
     real_size = sizes[size]
 
     # make space after every icon, except the last one
-    icons_per_line = int( (pdf.w + pad) / (real_size + pad) )
-    icons_per_col = int( (pdf.h + pad) / (real_size + pad) )
+    icons_per_line = int( (pdf.w + pad - 2*edge_margin) / (real_size + pad) )
+    icons_per_col = int( (pdf.h + pad - 2*edge_margin) / (real_size + pad) )
 
     pages = 1
     pdf.add_page()
 
     for i in range(amount):
-        x_pos = (i % icons_per_line) * (real_size + pad)
-        y_pos = ( int(i / icons_per_line) % icons_per_col ) * (real_size + pad)
 
-        if(i/icons_per_line>=pages*icons_per_col):
+        if((i) % (icons_per_line*icons_per_col) == 0 and i != 0):
             pdf.add_page()
             pages+=1
+
+        x_pos = (i % icons_per_line) * (real_size + pad) + edge_margin
+        y_pos = ( int(i / icons_per_line) % icons_per_col ) * (real_size + pad) + edge_margin
+
+
 
 
         pdf.image(icon, x=x_pos, y=y_pos, w=real_size, h=real_size)
@@ -45,19 +49,14 @@ def arrange_section(pdf, icon, size, amount):
 def arrange_num_section(pdf, num, size, amount):
     real_size = sizes[size]
     # make space after every icon, except the last one
-    icons_per_line = int( (pdf.w + pad) / (real_size + pad) )
-    icons_per_col = int( (pdf.h + pad) / (real_size + pad) )
+    icons_per_line = int( (pdf.w + pad - 2 * edge_margin) / (real_size + pad) )
+    icons_per_col = int( (pdf.h + pad - 2 * edge_margin) / (real_size + pad) )
 
-    pages = 1
     pdf.add_page()
 
     for i in range(amount):
-        x_pos = (i % icons_per_line) * (real_size + pad)
-        y_pos = ( int(i / icons_per_line) % icons_per_col ) * (real_size + pad)
-        if(i/icons_per_line>=pages*icons_per_col):
-            pdf.add_page()
-            pages+=1
-
+        x_pos = (i % icons_per_line) * (real_size + pad) + edge_margin
+        y_pos = ( int(i / icons_per_line) % icons_per_col ) * (real_size + pad) + edge_margin
 
         pdf.set_xy(x_pos, y_pos)
         pdf.cell(w=real_size, h=real_size,txt=str(num),align='C')
@@ -68,24 +67,29 @@ def arrange_section_with_back(pdf, icon, num, size, amount):
     real_size = sizes[size]
     pdf.set_font('helvetica', 'B', real_size-10)
     # make space after every icon, except the last one
-    icons_per_line = int( (pdf.w + pad) / (real_size + pad) )
-    icons_per_col = int( (pdf.h + pad) / (real_size + pad) )
+    icons_per_line = int( (pdf.w + pad - 2*edge_margin) / (real_size + pad) )
+    icons_per_col = int( (pdf.h + pad - 2*edge_margin) / (real_size + pad) )
 
     pages = 1
     pdf.add_page()
 
     for i in range(amount):
-        x_pos = (i % icons_per_line) * (real_size + pad)
-        y_pos = ( int(i / icons_per_line) % icons_per_col ) * (real_size + pad)
+        x_pos = (i % icons_per_line) * (real_size + pad) + edge_margin
+        y_pos = ( int(i / icons_per_line) % icons_per_col ) * (real_size + pad) + edge_margin
 
-        if(i/icons_per_line>=pages*icons_per_col):
-
-            arrange_num_section(pdf,num,size,icons_per_line*icons_per_col)
-
+        if((i) % (icons_per_line*icons_per_col) == 0 and i != 0):
             pdf.add_page()
             pages+=1
 
         pdf.image(icon, x=x_pos, y=y_pos, w=real_size, h=real_size)
+
+        if((i+1) % (icons_per_line*icons_per_col) == 0 and i != 0):
+
+            arrange_num_section(pdf,num,size,icons_per_line*icons_per_col)
+
+            pages+=1
+
+
 
     # how many icons are on last uncompleted page
     last_page = amount%(icons_per_col*icons_per_line)
@@ -118,8 +122,8 @@ if __name__ == '__main__':
     # format ('A3', 'A4' (default), 'A5', 'Letter', 'Legal', (100,150))
     pdf = FPDF('P', 'mm', 'A4')
     pdf.set_auto_page_break(False)
-    material_file = load_material_file("wicked.csv")
+    material_file = load_material_file("presouvani.csv")
 
     arrange_all(pdf, material_file)
 
-    save_pdf(pdf, 'test')
+    save_pdf(pdf, 'presouvani')
