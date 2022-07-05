@@ -6,7 +6,7 @@
 from fpdf import FPDF
 import pandas as pd
 
-sizes = {1: 43, 2: 34, 3: 27, 5: 42}
+sizes = {1: 43, 2: 34, 3: 27, 5: 42, 6: 22,7:16}
 pad = 5
 edge_margin = 10
 
@@ -65,8 +65,11 @@ def arrange_num_section(pdf, num, size, amount):
 
 def arrange_section_with_back(pdf, icon, num, size, amount):
     real_size = sizes[size]
-    pdf.set_font('helvetica', 'B', real_size-10)
-    # make space after every icon, except the last one
+    pdf.add_font('hilda', '', '/usr/share/fonts/truetype/fonts-yrsa-rasa/Yrsa-SemiBold.ttf')
+    pdf.set_font('hilda', '', real_size-2) # můj z prdele vytažený vzorec na velikost fontu
+    # TODO: Velikost fontu by mela byt ve dvojici s velikosti obrazku (mela byse tahat taky ze slovniku)
+
+# make space after every icon, except the last one
     icons_per_line = int( (pdf.w + pad - 2*edge_margin) / (real_size + pad) )
     icons_per_col = int( (pdf.h + pad - 2*edge_margin) / (real_size + pad) )
 
@@ -100,7 +103,7 @@ def arrange_section_with_back(pdf, icon, num, size, amount):
 
 def arrange_all(pdf, mfile):
     for _, row in mfile.iterrows():
-        icon = "images/" + row.icon
+        icon = row.icon
         size = row["size"]
         amount = row.amount
 
@@ -122,8 +125,8 @@ if __name__ == '__main__':
     # format ('A3', 'A4' (default), 'A5', 'Letter', 'Legal', (100,150))
     pdf = FPDF('P', 'mm', 'A4')
     pdf.set_auto_page_break(False)
-    material_file = load_material_file("presouvani.csv")
+    material_file = load_material_file("metagame2022.csv")
 
     arrange_all(pdf, material_file)
 
-    save_pdf(pdf, 'presouvani')
+    save_pdf(pdf, 'stity_a_ruce')
