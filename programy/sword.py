@@ -18,13 +18,12 @@ def save_pdf(pdf, name):
 
 
 def load_material_file(name):
-    dst = "materials/" + name
-    mfile = pd.read_csv(dst, sep=',')
+    mfile = pd.read_csv(name, sep=',')
 
     return mfile
 
 
-def arrange_num_section(pdf, num, size, amount):
+def arrange_num_section_vertically(pdf, num, size, amount):
     dct = {'1':'I', '2':'II','3':'III','4':'IV'}
     real_size_x, real_size_y = size
 
@@ -52,6 +51,25 @@ def arrange_num_section(pdf, num, size, amount):
             pdf.set_xy(x_pos, y_pos)
             pdf.cell(w=real_size_x, h=real_size_y/len(num), txt=str(num[j]), align='C')
 
+def arrange_num_section(pdf, num, size, amount):
+    real_size_x, real_size_y = size
+
+    # make space after every icon, except the last one
+    icons_per_line = int((pdf.w + pad - 2 * edge_margin) / (real_size_x + pad))
+    icons_per_col = int((pdf.h + pad - 2 * edge_margin) / (real_size_y + pad))
+
+    pdf.add_font('hilda', '', '/usr/share/fonts/truetype/fonts-yrsa-rasa/Yrsa-SemiBold.ttf')
+    pdf.set_font('hilda', '', 25) # můj z prdele vytažený vzorec na velikost fontu
+    # odvíjí se od výšky obrázku a délky řetězce
+
+    pdf.add_page()
+    for i in range(amount):
+        x_pos = (i % icons_per_line) * (real_size_x + pad) + edge_margin
+        y_pos = ( int(i / icons_per_line) % icons_per_col ) * (real_size_y + pad) + edge_margin
+
+        pdf.set_xy(x_pos, y_pos)
+        pdf.cell(w=real_size_x, h=real_size_y,txt=str(num),align='C')
+
 
 def arrange_section_with_back(pdf, icon, num, size, amount):
     real_size_x = size
@@ -62,7 +80,7 @@ def arrange_section_with_back(pdf, icon, num, size, amount):
 
     # make space after every icon, except the last one
     icons_per_line = int((pdf.w + pad - 2 * edge_margin) / (real_size_x + pad))
-    icons_per_col = int((pdf.h + pad - 2 * edge_margin) / (real_size_y + pad-1))
+    icons_per_col = int((pdf.h + pad - 2 * edge_margin) / (real_size_y + pad))
 
     pages = 1
     pdf.add_page()
@@ -105,8 +123,8 @@ if __name__ == '__main__':
     # format ('A3', 'A4' (default), 'A5', 'Letter', 'Legal', (100,150))
     pdf = FPDF('P', 'mm', 'A4')
     pdf.set_auto_page_break(False)
-    material_file = load_material_file("metagame-mece.csv")
+    material_file = load_material_file("2022/zdroje/metagame-mece.csv")
 
     arrange_all(pdf, material_file)
 
-    save_pdf(pdf, 'metagame2022')
+    save_pdf(pdf, '2022/generated/metagame-mece')

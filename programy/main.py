@@ -6,7 +6,7 @@
 from fpdf import FPDF
 import pandas as pd
 
-sizes = {1: 43, 2: 34, 3: 27, 5: 42, 6: 22,7:16}
+sizes = {1: 43, 5: 34, 6: 27, 4: 42, 8: 22,7:16}
 pad = 5
 edge_margin = 10
 
@@ -16,8 +16,7 @@ def save_pdf(pdf, name):
 
 
 def load_material_file(name):
-    dst = "materials/" + name
-    mfile = pd.read_csv(dst, sep=',')
+    mfile = pd.read_csv(name, sep=',')
 
     return mfile
 
@@ -66,8 +65,9 @@ def arrange_num_section(pdf, num, size, amount):
 def arrange_section_with_back(pdf, icon, num, size, amount):
     real_size = sizes[size]
     pdf.add_font('hilda', '', '/usr/share/fonts/truetype/fonts-yrsa-rasa/Yrsa-SemiBold.ttf')
-    pdf.set_font('hilda', '', real_size-2) # můj z prdele vytažený vzorec na velikost fontu
+    pdf.set_font('hilda', '', 30 - int(len(num)**1.2)) # můj z prdele vytažený vzorec na velikost fontu
     # TODO: Velikost fontu by mela byt ve dvojici s velikosti obrazku (mela byse tahat taky ze slovniku)
+    # TODO: Vlastne by melo zalezet spise na delce slova.
 
 # make space after every icon, except the last one
     icons_per_line = int( (pdf.w + pad - 2*edge_margin) / (real_size + pad) )
@@ -125,8 +125,8 @@ if __name__ == '__main__':
     # format ('A3', 'A4' (default), 'A5', 'Letter', 'Legal', (100,150))
     pdf = FPDF('P', 'mm', 'A4')
     pdf.set_auto_page_break(False)
-    material_file = load_material_file("metagame2022.csv")
+    material_file = load_material_file("2022/zdroje/zone-control.csv")
 
     arrange_all(pdf, material_file)
 
-    save_pdf(pdf, 'stity_a_ruce')
+    save_pdf(pdf, '2022/generated/zone-control-2022-final')
