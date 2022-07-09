@@ -6,7 +6,7 @@
 from fpdf import FPDF
 import pandas as pd
 
-sizes = {1: 43, 5: 34, 6: 27, 4: 42, 8: 22,7:16}
+sizes = {2:85, 3:60,4: 42, 5: 34, 6: 27, 8: 22,7:16}
 pad = 5
 edge_margin = 10
 
@@ -125,8 +125,8 @@ if __name__ == '__main__':
     # format ('A3', 'A4' (default), 'A5', 'Letter', 'Legal', (100,150))
     pdf = FPDF('P', 'mm', 'A4')
     pdf.set_auto_page_break(False)
-    material_file = load_material_file("2022/zdroje/zone-control.csv")
+    material_file = load_material_file("2022/zdroje/blood-wars.csv")
 
     arrange_all(pdf, material_file)
 
-    save_pdf(pdf, '2022/generated/zone-control-2022-final')
+    save_pdf(pdf, '2022/generated/blood-wars-2022-final')
