@@ -65,7 +65,7 @@ def arrange_num_section(pdf, num, size, amount):
 def arrange_section_with_back(pdf, icon, num, size, amount):
     real_size = sizes[size]
     pdf.add_font('hilda', '', '/usr/share/fonts/truetype/fonts-yrsa-rasa/Yrsa-SemiBold.ttf')
-    pdf.set_font('hilda', '', 30 - int(len(num)**1.2)) # můj z prdele vytažený vzorec na velikost fontu
+    pdf.set_font('hilda', '', 40 - int(len(num)**1.2)) # můj z prdele vytažený vzorec na velikost fontu
     # TODO: Velikost fontu by mela byt ve dvojici s velikosti obrazku (mela byse tahat taky ze slovniku)
     # TODO: Vlastne by melo zalezet spise na delce slova.
 
@@ -109,7 +109,7 @@ def arrange_all(pdf, mfile):
 
 
         if 'otherside_num' in row:
-            otherside_num = row.otherside_num
+            otherside_num = str(row.otherside_num)
             arrange_section_with_back(pdf, icon, otherside_num, size, amount)
         else:
             arrange_section(pdf, icon, size, amount)
@@ -125,8 +125,8 @@ if __name__ == '__main__':
     # format ('A3', 'A4' (default), 'A5', 'Letter', 'Legal', (100,150))
     pdf = FPDF('P', 'mm', 'A4')
     pdf.set_auto_page_break(False)
-    material_file = load_material_file("2022/zdroje/blood-wars.csv")
+    material_file = load_material_file("2022/zdroje/kytky.csv")
 
     arrange_all(pdf, material_file)
 
-    save_pdf(pdf, '2022/generated/blood-wars-2022-final')
+    save_pdf(pdf, '2022/generated/kytky-final')
