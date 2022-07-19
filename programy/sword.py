@@ -95,14 +95,14 @@ def arrange_section_with_back(pdf, icon, num, size, amount):
 
         pdf.image(icon, x=x_pos, y=y_pos, w=real_size_x)
 
-        if ((i + 1) % (icons_per_line * icons_per_col) == 0 and i != 0):
+        if ((i + 1) % (icons_per_line * icons_per_col) == 0 and i != 0) and num!="kek":
             arrange_num_section(pdf, num, (real_size_x, real_size_y), icons_per_line * icons_per_col)
 
             pages += 1
 
     # how many icons are on last uncompleted page
     last_page = amount % (icons_per_col * icons_per_line)
-    if last_page != 0:
+    if last_page != 0 and num!="kek":
         arrange_num_section(pdf, num, (real_size_x, real_size_y), last_page)
 
 
@@ -123,8 +123,8 @@ if __name__ == '__main__':
     # format ('A3', 'A4' (default), 'A5', 'Letter', 'Legal', (100,150))
     pdf = FPDF('P', 'mm', 'A4')
     pdf.set_auto_page_break(False)
-    material_file = load_material_file("2022/zdroje/metagame-mece.csv")
+    material_file = load_material_file("2022/zdroje/ryby.csv")
 
     arrange_all(pdf, material_file)
 
-    save_pdf(pdf, '2022/generated/metagame-mece')
+    save_pdf(pdf, '2022/generated/ryby')
