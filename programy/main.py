@@ -65,7 +65,7 @@ def arrange_num_section(pdf, num, size, amount):
 def arrange_section_with_back(pdf, icon, num, size, amount):
     real_size = sizes[size]
     pdf.add_font('hilda', '', '/usr/share/fonts/truetype/fonts-yrsa-rasa/Yrsa-SemiBold.ttf')
-    pdf.set_font('hilda', '', 40 - int(len(num)**1.2)) # můj z prdele vytažený vzorec na velikost fontu
+    pdf.set_font('hilda', '', 30 - int(len(num)**1.2)) # můj z prdele vytažený vzorec na velikost fontu
     # TODO: Velikost fontu by mela byt ve dvojici s velikosti obrazku (mela byse tahat taky ze slovniku)
     # TODO: Vlastne by melo zalezet spise na delce slova.
 
@@ -129,4 +129,4 @@ if __name__ == '__main__':
 
     arrange_all(pdf, material_file)
 
-    save_pdf(pdf, '2022/generated/kytky-final')
+    save_pdf(pdf, '2022/generated/kytky-vetsi-final')
