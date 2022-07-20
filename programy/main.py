@@ -125,8 +125,8 @@ if __name__ == '__main__':
     # format ('A3', 'A4' (default), 'A5', 'Letter', 'Legal', (100,150))
     pdf = FPDF('P', 'mm', 'A4')
     pdf.set_auto_page_break(False)
-    material_file = load_material_file("2022/zdroje/kytky.csv")
+    material_file = load_material_file("2022/zdroje/lov.csv")
 
     arrange_all(pdf, material_file)
 
-    save_pdf(pdf, '2022/generated/kytky-vetsi-final')
+    save_pdf(pdf, '2022/generated/lov-final')
