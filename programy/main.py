@@ -108,7 +108,7 @@ def arrange_all(pdf, mfile):
         amount = row.amount
 
 
-        if 'otherside_num' in row:
+        if 'otherside_num' in row and str(row.otherside_num)!="kek":
             otherside_num = str(row.otherside_num)
             arrange_section_with_back(pdf, icon, otherside_num, size, amount)
         else:
@@ -125,8 +125,8 @@ if __name__ == '__main__':
     # format ('A3', 'A4' (default), 'A5', 'Letter', 'Legal', (100,150))
     pdf = FPDF('P', 'mm', 'A4')
     pdf.set_auto_page_break(False)
-    material_file = load_material_file("2022/zdroje/lov.csv")
+    material_file = load_material_file("2022/zdroje/barevna-prizen.csv")
 
     arrange_all(pdf, material_file)
 
-    save_pdf(pdf, '2022/generated/lov-final')
+    save_pdf(pdf, '2022/generated/barevna-prizen')
